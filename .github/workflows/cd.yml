@@ -47,6 +47,19 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      # デバッグ: 環境変数とKamal設定の確認
+      - name: Debug Kamal configuration
+        run: |
+          echo "=== Environment check ==="
+          echo "RAILS_MASTER_KEY is set: ${RAILS_MASTER_KEY:+yes}"
+          echo "RAILS_MASTER_KEY length: ${#RAILS_MASTER_KEY}"
+          
+          echo "=== Kamal config validation ==="
+          bin/kamal config || echo "Kamal config validation failed"
+          
+          echo "=== Kamal secrets validation ==="
+          bin/kamal secrets || echo "Kamal secrets validation failed"
+
       # Kamalを使って本番環境にデプロイ実行
       - name: Deploy with Kamal
         run: bin/kamal deploy
