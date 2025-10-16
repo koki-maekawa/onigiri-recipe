@@ -54,5 +54,5 @@ jobs:
         id: kamal-deploy
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_<account_id>_dkr_ecr_<region>_amazonaws_com }}
+          KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_733853434519_dkr_ecr_ap-northeast-1_amazonaws_com }}
         run: bin/kamal deploy
