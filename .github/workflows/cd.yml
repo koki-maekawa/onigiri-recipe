@@ -41,6 +41,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
 
+      # ECRにログイン（Kamalが認証情報を管理する必要がなくなる）
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
       # EC2へのSSH接続を有効化（Kamalがデプロイできるように）
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.8.0

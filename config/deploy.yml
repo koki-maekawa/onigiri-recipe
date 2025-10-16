@@ -20,11 +20,9 @@ proxy:
   app_port: 3000
 
 # Dockerコンテナレジストリの認証情報(AWS ECR使用)
+# Actions側でECRログインを完了するため、username/passwordは不要
 registry:
   server: 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com/onigiri-recipe
-  username: aws
-  password:
-    - <%= %x(aws ecr get-login-password --region ap-northeast-1) %>
 
 # 環境変数
 env:
