@@ -60,12 +60,30 @@ jobs:
           echo "RAILS_MASTER_KEY is set: ${RAILS_MASTER_KEY:+yes}"
           echo "RAILS_MASTER_KEY length: ${#RAILS_MASTER_KEY}"
           
+          echo "=== File system check ==="
+          echo "Secrets file exists: $(test -f .kamal/secrets && echo 'yes' || echo 'no')"
+          if [ -f .kamal/secrets ]; then
+            echo "Secrets file size: $(wc -c < .kamal/secrets) bytes"
+            echo "Secrets file content (masked): RAILS_MASTER_KEY=[REDACTED]"
+          fi
+          
           echo "=== Kamal config validation ==="
           bin/kamal config || echo "Kamal config validation failed"
           
-          echo "=== Kamal secrets validation ==="
-          bin/kamal secrets || echo "Kamal secrets validation failed"
+          echo "=== Kamal secrets print test ==="
+          bin/kamal secrets print || echo "Kamal secrets print failed"
 
       # Kamalを使って本番環境にデプロイ実行
+      - name: Setup Kamal (if needed)
+        run: |
+          echo "=== Checking if Kamal setup is needed ==="
+          if ! bin/kamal app details 2>/dev/null; then
+            echo "Running initial Kamal setup..."
+            bin/kamal setup
+          else
+            echo "Kamal already set up, proceeding with deploy"
+          fi
+        continue-on-error: true
+
       - name: Deploy with Kamal
         run: bin/kamal deploy
