@@ -20,11 +20,9 @@ proxy:
   app_port: 3000
 
 # Dockerコンテナレジストリの認証情報(AWS ECR使用)
-# ECR認証はホストレベルで行われるため、serverはホストのみを指定
+# GitHub ActionsでECRログインを完了しているため、Kamal側では認証を省略
 registry:
   server: 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com
-  username: aws
-  password: <%= ENV['KAMAL_REGISTRY_PASSWORD'] %>
 
 # 環境変数
 env:
