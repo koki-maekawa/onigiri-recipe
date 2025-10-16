@@ -45,6 +45,14 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      # ECRにログイン（Docker認証用）
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # ECRパスワードを環境変数として設定（Kamal用）
+      - name: Set KAMAL_REGISTRY_PASSWORD
+        run: echo "KAMAL_REGISTRY_PASSWORD=$(aws ecr get-login-password --region ap-northeast-1)" >> $GITHUB_ENV
+
       - name: Deploy with Kamal
         id: kamal-deploy
         env:

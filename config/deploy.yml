@@ -24,7 +24,7 @@ proxy:
 registry:
   server: 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com/onigiri-recipe
   username: aws
-  password: <%= %x(aws ecr get-login-password --region ap-northeast-1) %>
+  password: <%= ENV['KAMAL_REGISTRY_PASSWORD'] %>
 
 # 環境変数
 env:
