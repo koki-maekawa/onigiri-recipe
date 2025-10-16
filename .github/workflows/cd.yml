@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: production
-    env:
-      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
 
     steps:
       # リポジトリのソースコードを取得
@@ -51,19 +49,8 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # RailsのRAILS_MASTER_KEYをKamal用に設定
-      - name: Create secrets file
-        run: |
-          echo "=== 確認ポイント（CI内）: 値が入っているか最小限で確認 ==="
-          echo "RAILS_MASTER_KEY is set: ${RAILS_MASTER_KEY:+yes}"
-          echo "RAILS_MASTER_KEY length: ${#RAILS_MASTER_KEY}"
-          
-          echo "=== secrets-commonの生成（展開あり）: ダブルクォートで実値を書き込む ==="
-          mkdir -p .kamal
-          echo "RAILS_MASTER_KEY=\"$RAILS_MASTER_KEY\"" > .kamal/secrets-common
-          
-          echo "Generated .kamal/secrets-common with actual key value"
-          echo "File size: $(wc -c < .kamal/secrets-common) bytes"
-
       - name: Deploy with Kamal
+        env:
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_<account_id>_dkr_ecr_<region>_amazonaws_com }}
         run: bin/kamal deploy
