@@ -47,6 +47,7 @@ jobs:
 
       # ECRにログイン（Docker認証用）
       - name: Login to Amazon ECR
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
       # ECRリポジトリの存在確認と作成
@@ -60,27 +61,9 @@ jobs:
             echo "ECR repository onigiri-recipe already exists"
           fi
 
-      # ECRパスワードを環境変数として設定（Kamal用）
-      - name: Set KAMAL_REGISTRY_PASSWORD
-        run: |
-          ECR_PASSWORD=$(aws ecr get-login-password --region ap-northeast-1)
-          echo "KAMAL_REGISTRY_PASSWORD=${ECR_PASSWORD}" >> $GITHUB_ENV
-          echo "ECR password set (length: ${#ECR_PASSWORD})"
-
-      # Docker認証状況の確認
-      - name: Verify Docker authentication
-        run: |
-          echo "=== Verify ECR authentication ==="
-          docker system info | grep -A 10 "Registry Mirrors" || echo "No registry info"
-          echo "=== Test ECR connection ==="
-          echo "FROM alpine:latest" > Dockerfile.test
-          docker build -f Dockerfile.test -t 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com/onigiri-recipe:test .
-          docker push 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com/onigiri-recipe:test
-          echo "=== ECR connection successful ==="
-          rm -f Dockerfile.test
-
       - name: Deploy with Kamal
         id: kamal-deploy
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_733853434519_dkr_ecr_ap_northeast_1_amazonaws_com }}
         run: bin/kamal deploy
