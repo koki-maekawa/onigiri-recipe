@@ -23,9 +23,8 @@ proxy:
 # Actions側でECRログインを完了するため、passwordは不要だがusernameは必須
 registry:
   server: 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com/onigiri-recipe
-  username: AWS
-  password:
-    - KAMAL_REGISTRY_PASSWORD
+  username: aws
+  password: <%= %x(aws ecr get-login-password --region ap-northeast-1) %>
 
 # 環境変数
 env:
