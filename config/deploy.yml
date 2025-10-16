@@ -28,7 +28,8 @@ registry:
 
 # 環境変数
 env:
-  RAILS_MASTER_KEY: <%= ENV['RAILS_MASTER_KEY'] %>
+  secret:
+    - RAILS_MASTER_KEY
 
 # エイリアス
 aliases:
