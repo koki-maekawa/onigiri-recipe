@@ -58,11 +58,13 @@ jobs:
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: |
+          echo "=== ECR Password Length Check ==="
+          echo "Password length: ${#KAMAL_REGISTRY_PASSWORD}"
           echo "=== Kamal Registry Configuration ==="
-          bin/kamal config | grep -A 10 -B 5 registry || echo "Registry config not found"
+          bin/kamal config | grep -A 10 -B 5 -i registry || echo "Registry config not found"
           echo "=== Docker Login Test ==="
           echo "Testing docker login to ECR host..."
-          docker login --username aws --password $(aws ecr get-login-password --region ap-northeast-1) 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com
+          echo "${KAMAL_REGISTRY_PASSWORD}" | docker login --username aws --password-stdin 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com
           echo "=== Docker Auth Check ==="
           cat ~/.docker/config.json | jq '.auths' || echo "No auth config found"
 

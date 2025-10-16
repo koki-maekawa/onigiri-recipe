@@ -1,8 +1,8 @@
 # サービス名。コンテナ名のプレフィクスとして使用される。
 service: onigiri-recipe
 
-# Dockerイメージ名。コンテナレジストリにpushする名前。
-image: 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com/onigiri-recipe
+# Dockerイメージ名。レジストリサーバーと組み合わせて使用される。
+image: onigiri-recipe
 
 # デプロイ先のサーバーのIPアドレスまたはホスト名。
 # web:とすることでロールを分けることができる
