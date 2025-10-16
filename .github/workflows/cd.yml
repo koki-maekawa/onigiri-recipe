@@ -49,6 +49,24 @@ jobs:
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
+      # ECRログインの詳細確認
+      - name: Verify ECR login details
+        run: |
+          echo "=== AWS Identity ==="
+          aws sts get-caller-identity
+          echo "=== ECR Repositories ==="
+          aws ecr describe-repositories --region ap-northeast-1 || echo "No repositories or access denied"
+          echo "=== ECR Repository Check ==="
+          aws ecr describe-repositories --repository-names onigiri-recipe --region ap-northeast-1 || echo "onigiri-recipe repository not found"
+          echo "=== Docker Config Check (full) ==="
+          cat ~/.docker/config.json || echo "No Docker config file found"
+          echo "=== Docker Config Check (auths only) ==="
+          cat ~/.docker/config.json | jq '.auths' || echo "No Docker auth found"
+          echo "=== Manual ECR Login Test ==="
+          aws ecr get-login-password --region ap-northeast-1 | docker login --username aws --password-stdin 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com
+          echo "=== Docker Config After Manual Login ==="
+          cat ~/.docker/config.json | jq '.auths' || echo "Still no Docker auth found"
+
       # ECRパスワードを環境変数として設定（Kamal用）
       - name: Set KAMAL_REGISTRY_PASSWORD
         run: echo "KAMAL_REGISTRY_PASSWORD=$(aws ecr get-login-password --region ap-northeast-1)" >> $GITHUB_ENV
@@ -60,13 +78,16 @@ jobs:
         run: |
           echo "=== ECR Password Length Check ==="
           echo "Password length: ${#KAMAL_REGISTRY_PASSWORD}"
-          echo "=== Kamal Registry Configuration ==="
-          bin/kamal config | grep -A 10 -B 5 -i registry || echo "Registry config not found"
-          echo "=== Docker Login Test ==="
-          echo "Testing docker login to ECR host..."
-          echo "${KAMAL_REGISTRY_PASSWORD}" | docker login --username aws --password-stdin 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com
-          echo "=== Docker Auth Check ==="
-          cat ~/.docker/config.json | jq '.auths' || echo "No auth config found"
+          echo "=== Kamal Full Configuration ==="
+          bin/kamal config || echo "Kamal config failed"
+          echo "=== Look for registry/repository in config ==="
+          bin/kamal config | grep -i -E "(registry|repository|server)" || echo "No registry config found"
+          echo "=== Docker Auth After All Setup ==="
+          cat ~/.docker/config.json | jq '.' || echo "No Docker config found"
+          echo "=== Test Docker Push Auth ==="
+          echo "FROM alpine:latest" | docker build -t test-push -
+          docker tag test-push 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com/onigiri-recipe:test || echo "Tag failed"
+          docker push 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com/onigiri-recipe:test || echo "Push failed - auth issue"
 
       - name: Deploy with Kamal
         id: kamal-deploy
