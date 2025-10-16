@@ -47,6 +47,12 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      # RailsのRAILS_MASTER_KEYをKamal用に.secretsファイルへ出力
+      - name: Create secrets file
+        run: |
+          mkdir -p .kamal
+          echo "RAILS_MASTER_KEY=$RAILS_MASTER_KEY" > .kamal/secrets
+
       # デバッグ: 環境変数とKamal設定の確認
       - name: Debug Kamal configuration
         run: |
