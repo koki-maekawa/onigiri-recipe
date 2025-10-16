@@ -41,6 +41,7 @@ jobs:
 
       # ECRにログイン（Kamalが認証情報を管理する必要がなくなる）
       - name: Login to Amazon ECR
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
       # EC2へのSSH接続を有効化（Kamalがデプロイできるように）
@@ -50,6 +51,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Deploy with Kamal
+        id: kamal-deploy
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_<account_id>_dkr_ecr_<region>_amazonaws_com }}
