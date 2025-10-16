@@ -53,6 +53,19 @@ jobs:
       - name: Set KAMAL_REGISTRY_PASSWORD
         run: echo "KAMAL_REGISTRY_PASSWORD=$(aws ecr get-login-password --region ap-northeast-1)" >> $GITHUB_ENV
 
+      # Kamal設定の確認とDocker認証テスト
+      - name: Verify Kamal configuration and Docker auth
+        env:
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: |
+          echo "=== Kamal Registry Configuration ==="
+          bin/kamal config | grep -A 10 -B 5 registry || echo "Registry config not found"
+          echo "=== Docker Login Test ==="
+          echo "Testing docker login to ECR host..."
+          docker login --username aws --password $(aws ecr get-login-password --region ap-northeast-1) 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com
+          echo "=== Docker Auth Check ==="
+          cat ~/.docker/config.json | jq '.auths' || echo "No auth config found"
+
       - name: Deploy with Kamal
         id: kamal-deploy
         env:

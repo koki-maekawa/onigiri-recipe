@@ -1,8 +1,8 @@
 # サービス名。コンテナ名のプレフィクスとして使用される。
-service: onigiri_recipe
+service: onigiri-recipe
 
 # Dockerイメージ名。コンテナレジストリにpushする名前。
-image: onigiri_recipe
+image: 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com/onigiri-recipe
 
 # デプロイ先のサーバーのIPアドレスまたはホスト名。
 # web:とすることでロールを分けることができる
@@ -20,9 +20,9 @@ proxy:
   app_port: 3000
 
 # Dockerコンテナレジストリの認証情報(AWS ECR使用)
-# Actions側でECRログインを完了するため、passwordは不要だがusernameは必須
+# ECR認証はホストレベルで行われるため、serverはホストのみを指定
 registry:
-  server: 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com/onigiri-recipe
+  server: 733853434519.dkr.ecr.ap-northeast-1.amazonaws.com
   username: aws
   password: <%= ENV['KAMAL_REGISTRY_PASSWORD'] %>
 
