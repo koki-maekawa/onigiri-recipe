@@ -87,7 +87,7 @@ production:
   primary: &primary_production
     <<: *default
     database: database-1
-    username: postgres
-    password: <%= Rails.application.credentials.database_password %>
-    host: database-1.cbyw0q4wa92o.ap-northeast-1.rds.amazonaws.com
+    username: <%= ENV["DATABASE_USERNAME"] %>
+    password: <%= ENV["DATABASE_PASSWORD"] %>
+    host: <%= ENV["DATABASE_HOST"] %>
     port: 5432
