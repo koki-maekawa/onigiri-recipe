@@ -91,3 +91,12 @@ production:
     password: <%= ENV["DATABASE_PASSWORD"] %>
     host: <%= ENV["DATABASE_HOST"] %>
     port: 5432
+  cache:
+    <<: *primary_production
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    migrations_paths: db/cable_migrate
