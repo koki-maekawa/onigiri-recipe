@@ -61,6 +61,20 @@ jobs:
             echo "ECR repository onigiri-recipe already exists"
           fi
 
+      # 環境変数の確認
+      - name: Debug environment variables
+        env:
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+        run: |
+          echo "=== Environment Variables ==="
+          echo "DATABASE_USERNAME: ${DATABASE_USERNAME:-'(not set)'}"
+          echo "DATABASE_PASSWORD: ${DATABASE_PASSWORD:-'(not set)'}" | sed 's/./*/g'
+          echo "DATABASE_HOST: ${DATABASE_HOST:-'(not set)'}"
+          echo "=== Kamal Configuration ==="
+          bin/kamal config
+
       - name: Deploy with Kamal
         id: kamal-deploy
         env:
