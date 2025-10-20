@@ -28,6 +28,8 @@ registry:
 
 # 環境変数
 env:
+  clear:
+    RAILS_ENV: production
   secret:
     - RAILS_MASTER_KEY
     - DATABASE_USERNAME
