@@ -62,8 +62,9 @@ jobs:
           fi
 
       # 環境変数の確認
-      - name: Debug environment variables
+      - name: Debug environment variables and Kamal config
         env:
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
@@ -72,7 +73,13 @@ jobs:
           echo "DATABASE_USERNAME: ${DATABASE_USERNAME:-'(not set)'}"
           echo "DATABASE_PASSWORD: ${DATABASE_PASSWORD:-'(not set)'}" | sed 's/./*/g'
           echo "DATABASE_HOST: ${DATABASE_HOST:-'(not set)'}"
-          echo "=== Kamal Configuration ==="
+          echo "=== Deploy.yml env section ==="
+          grep -A 10 -B 2 "^env:" config/deploy.yml || echo "env section not found"
+          echo "=== Secrets-common content ==="
+          cat .kamal/secrets-common
+          echo "=== Kamal Configuration with env ==="
+          bin/kamal config | grep -A 20 -B 5 -i env || echo "No env configuration found"
+          echo "=== Full Kamal Config ==="
           bin/kamal config
 
       - name: Deploy with Kamal
