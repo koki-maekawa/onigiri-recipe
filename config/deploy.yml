@@ -15,7 +15,7 @@ proxy:
   # Let's EncryptによるSSL/TLSサーバー証明書の自動取得を有効にする
   ssl: true
   # ホスト名でWebアプリのコンテナにルーティングする。ssl: trueの時は必須。
-  host: myapp.host
+  host: rice-ball.com
   # Webアプリコンテナの待ち受けポート番号。Railsなら3000番。
   app_port: 3000
 
