@@ -50,38 +50,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # ECRリポジトリの存在確認と作成
-      - name: Ensure ECR repository exists
-        run: |
-          if ! aws ecr describe-repositories --repository-names onigiri-recipe --region ap-northeast-1 2>/dev/null; then
-            echo "Creating ECR repository: onigiri-recipe"
-            aws ecr create-repository --repository-name onigiri-recipe --region ap-northeast-1
-            echo "ECR repository created successfully"
-          else
-            echo "ECR repository onigiri-recipe already exists"
-          fi
-
-      # 環境変数の確認
-      - name: Debug environment variables and Kamal config
-        env:
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-        run: |
-          echo "=== Environment Variables ==="
-          echo "DATABASE_USERNAME: ${DATABASE_USERNAME:-'(not set)'}"
-          echo "DATABASE_PASSWORD: ${DATABASE_PASSWORD:-'(not set)'}" | sed 's/./*/g'
-          echo "DATABASE_HOST: ${DATABASE_HOST:-'(not set)'}"
-          echo "=== Deploy.yml env section ==="
-          grep -A 10 -B 2 "^env:" config/deploy.yml || echo "env section not found"
-          echo "=== Secrets-common content ==="
-          cat .kamal/secrets-common
-          echo "=== Kamal Configuration with env ==="
-          bin/kamal config | grep -A 20 -B 5 -i env || echo "No env configuration found"
-          echo "=== Full Kamal Config ==="
-          bin/kamal config
-
+      # KamalでEC2にRailsアプリをデプロイ（Docker化、SSL設定、データベース接続含む）
       - name: Deploy with Kamal
         id: kamal-deploy
         env:
