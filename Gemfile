@@ -55,6 +55,9 @@ group :development, :test do
   gem "erb_lint", require: false
 
   gem "htmlbeautifier", require: false
+
+  gem "devise"
+  gem "devise-i18n"
 end
 
 group :development do
