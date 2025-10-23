@@ -9,7 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: 
-      name: production 
+      name: production
 
     steps:
       # リポジトリのソースコードを取得
@@ -45,10 +45,19 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # RailsのRAILS_MASTER_KEYをKamal用に.secretsファイルへ出力
-      - name: Create secrets file
-        run: echo "RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}" > .kamal/secrets
+      # ECRにログイン（Docker認証用）
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-      # Kamalを使って本番環境にデプロイ実行
+      # KamalでEC2にRailsアプリをデプロイ（Docker化、SSL設定、データベース接続含む）
       - name: Deploy with Kamal
+        id: kamal-deploy
+        env:
+          RAILS_ENV: production
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+          KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_733853434519_dkr_ecr_ap_northeast_1_amazonaws_com }}
         run: bin/kamal deploy
