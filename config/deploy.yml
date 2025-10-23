@@ -54,6 +54,8 @@ builder:
   arch: amd64
   context: .
   dockerfile: Dockerfile
+  cache:
+    type: gha
 
 # リモートサーバーのSSH情報。
 ssh:
