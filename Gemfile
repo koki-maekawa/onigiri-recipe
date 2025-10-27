@@ -60,6 +60,9 @@ group :development, :test do
 
   gem "devise"
   gem "devise-i18n"
+  gem "omniauth"
+  gem "omniauth-twitter2"
+  gem "omniauth-rails_csrf_protection"
 end
 
 group :development do
