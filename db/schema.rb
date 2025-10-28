@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_28_044837) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_28_044907) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -32,6 +32,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_28_044837) do
     t.index ["user_id"], name: "index_rice_balls_on_user_id"
   end
 
+  create_table "steps", force: :cascade do |t|
+    t.bigint "rice_ball_id", null: false
+    t.text "description"
+    t.integer "step_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rice_ball_id"], name: "index_steps_on_rice_ball_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -49,4 +58,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_28_044837) do
 
   add_foreign_key "ingredients", "rice_balls"
   add_foreign_key "rice_balls", "users"
+  add_foreign_key "steps", "rice_balls"
 end
