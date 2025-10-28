@@ -1,0 +1,13 @@
+ja:
+  activerecord:
+    attributes:
+      user:
+        name: "名前"
+        policies_agreed: "利用規約とプライバシーポリシーの同意"
+  devise:
+    registrations:
+      new:
+        policies_agreed: "%{terms_url}及び%{privacy_url}に同意の上、登録またはログインへお進みください。"
+    sessions:
+      new:
+        policies_agreed: "%{terms_url}及び%{privacy_url}に同意の上、登録またはログインへお進みください。"
