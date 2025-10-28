@@ -1,0 +1,18 @@
+ja:
+  defaults:
+    create_rice_ball: "おにぎりを作る"
+    search_rice_ball: "おにぎりを探す"
+    my_page: "マイページ"
+    bookmark: '保存'
+    bookmarked: '解除'
+    x_share_btn: "Xでシェア"
+    terms_of_service: "利用規約"
+    privacy_policy: "プライバシーポリシー"
+    service_title: "おにぎりレシピ"
+  shared:
+    header:
+      logout: "ログアウト"
+    before_login_header:
+      login: "ログイン"
+    footer:
+      x: "公式Xアカウント"
