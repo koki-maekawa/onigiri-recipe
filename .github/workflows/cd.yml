@@ -14,7 +14,7 @@ jobs:
     steps:
       # リポジトリのソースコードを取得
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # RubyとBundlerをセットアップし、依存関係をキャッシュ
       - name: Set up Ruby
