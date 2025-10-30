@@ -1,0 +1,103 @@
+<div class="w-full bg-white border border-gray-200 rounded-lg shadow-sm my-4 mx-2 sm:mx-4 md:mx-6 lg:mx-8 p-4 sm:p-6 md:p-8 self-start">
+  <%= form_with(
+        model: recipe_form,
+        url: recipe_form.persisted? ? rice_ball_path(recipe_form) : rice_balls_path,
+        class: "flex flex-col items-center gap-8",
+        id: "form_errors"
+      ) do |form| %>
+    <!-- 基本情報フォーム -->
+    <%= form.fields_for(:rice_ball_attributes, recipe_form.rice_ball) do |f| %>
+      <div class="w-full max-w-xl space-y-6">
+        <!-- タイトル -->
+        <div>
+          <%= f.label :title, class: "block mb-2 text-base md:text-lg font-bold text-gray-900" %>
+          <%= f.text_field :title,
+                class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900
+                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" %>
+        </div>
+        <!-- 説明 -->
+        <div>
+          <%= f.label :description, class: "block mb-2 text-base md:text-lg font-bold text-gray-900" %>
+          <%= f.text_area :description,
+                rows: 4,
+                class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900
+                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-y" %>
+        </div>
+        <!-- 画像 -->
+        <div>
+          <%= f.label :image, class: "block mb-2 text-base md:text-lg font-bold text-gray-900" %>
+          <%= f.file_field :image,
+                class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900
+                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500
+                        file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0
+                        file:text-sm file:bg-green-50 file:text-green-700 hover:file:bg-green-100" %>
+        </div>
+      </div>
+    <% end %>
+    <!-- 材料・手順フォーム -->
+    <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- 材料フォーム -->
+      <div class="w-full" data-controller="ingredient-forms">
+        <h2 class="mb-4 text-base md:text-lg font-bold text-gray-900">
+          <%= Ingredient.model_name.human %>
+        </h2>
+        <!-- テンプレート -->
+        <template data-ingredient-forms-target="Template">
+          <%= form.fields_for(:ingredients_attributes, Ingredient.new, index: "RECORD") do |f| %>
+            <%= render "ingredient_fields", f: f %>
+          <% end %>
+        </template>
+        <!-- 既存の材料フォーム -->
+        <% recipe_form.ingredients&.each_with_index do |ingredient, i| %>
+          <%= form.fields_for(:ingredients_attributes, ingredient, index: i) do |f| %>
+            <%= render "ingredient_fields", f: f %>
+            <%= f.hidden_field :id if ingredient.persisted? %>
+          <% end %>
+        <% end %>
+        <!-- 追加ボタン -->
+        <div data-ingredient-forms-target="addIngredientFormArea" class="mt-4">
+          <%= link_to t("defaults.add_ingredient_form"),
+                      "#",
+                      data: { action: "click->ingredient-forms#addIngredientForm" },
+                      class: "block w-full text-center px-4 py-2 rounded-md border border-green-300
+                              bg-green-100 hover:bg-green-200 text-green-800 text-sm sm:text-base
+                              font-medium transition-colors" %>
+        </div>
+      </div>
+      <!-- 手順フォーム -->
+      <div class="w-full" data-controller="step-forms">
+        <h2 class="mb-4 text-base md:text-lg font-bold text-gray-900">
+          <%= Step.human_attribute_name(:description) %>
+        </h2>
+        <!-- テンプレート -->
+        <template data-step-forms-target="Template">
+          <%= form.fields_for(:steps_attributes, Step.new, index: "RECORD") do |f| %>
+            <%= render "step_fields", f: f %>
+          <% end %>
+        </template>
+        <!-- 既存の手順フォーム -->
+        <% recipe_form.steps&.each_with_index do |step, i| %>
+          <%= form.fields_for(:steps_attributes, step, index: i) do |f| %>
+            <%= render "step_fields", f: f %>
+            <%= f.hidden_field :id if step.persisted? %>
+          <% end %>
+        <% end %>
+        <!-- 追加ボタン -->
+        <div data-step-forms-target="addStepFormArea" class="mt-4">
+          <%= link_to t("defaults.add_step_form"),
+                      "#",
+                      data: { action: "click->step-forms#addStepForm" },
+                      class: "block w-full text-center px-4 py-2 rounded-md border border-green-300
+                              bg-green-100 hover:bg-green-200 text-green-800 text-sm sm:text-base
+                              font-medium transition-colors" %>
+        </div>
+      </div>
+    </div>
+    <div class="self-end">
+      <%= form.submit t("defaults.recipe_submit"),
+            class: "px-4 py-2 sm:px-6 sm:py-3 bg-green-600 hover:bg-green-700 text-white font-semibold
+                    rounded-md shadow-sm transition-colors text-sm sm:text-base focus:outline-none
+                    focus:ring-2 focus:ring-green-500 focus:ring-offset-2" %>
+    </div>
+  <% end %>
+</div>
