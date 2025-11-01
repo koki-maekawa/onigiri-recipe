@@ -1,4 +1,61 @@
-<div>
-  <h1 class="font-bold text-4xl">RiceBalls#show</h1>
-  <p>Find me in app/views/rice_balls/show.html.erb</p>
+<div class="bg-white shadow-sm rounded-lg border border-gray-200 flex flex-col w-full gap-4 my-4 mx-2 sm:mx-4 md:mx-6 lg:mx-8 p-2 sm:p-3 md:p-4 self-start">
+  <div class="flex flex-col md:flex-row gap-4">
+    <% if @rice_ball.image.attached? %>
+      <figure>
+        <%= image_tag @rice_ball.image.variant(:show), class: "w-96 h-64 rounded-lg object-cover" %>
+      </figure>
+    <% else %>
+      <figure>
+        <%= image_tag "onigiri.png", class: "w-96 h-64 rounded-lg object-cover" %>
+      </figure>
+    <% end %>
+    <div class="flex flex-col gap-2">
+      <h2>
+        <span class="text-lg sm:text-xl font-bold text-gray-900"><%= @rice_ball.title %></span>
+      </h2>
+      <% if @rice_ball.description %>
+        <div>
+          <p class="text-base sm:text-lg text-gray-700"><%= @rice_ball.description %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="flex flex-col md:flex-row gap-4">
+    <div class="w-full max-w-xl bg-green-50 rounded-lg p-4 border border-green-200">
+      <h3 class="text-base sm:text-lg font-bold text-green-900 mb-3"><%= Ingredient.model_name.human %></h3>
+      <ul class="space-y-2">
+        <% @rice_ball.ingredients.each do |ingredient| %>
+          <li class="border-b border-green-200 pb-2">
+            <span class="text-base sm:text-lg font-bold text-gray-900"><%= ingredient.name %></span>
+            <span class="text-base sm:text-lg text-gray-600 ml-2"><%= ingredient.amount %></span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <% if @rice_ball.steps.present? %>
+      <div class="w-full max-w-xl bg-gray-50 rounded-lg p-4 border border-gray-200">
+        <h3 class="text-base sm:text-lg font-bold text-gray-900 mb-3"><%= Step.model_name.human %></h3>
+        <ol class="space-y-2">
+          <% @rice_ball.steps.order(:step_number).each_with_index do |step, index| %>
+            <li class="border-b border-gray-200 pb-2">
+              <span class="inline-block bg-green-600 text-white text-sm w-6 h-6 rounded-full text-center leading-6 mr-2"><%= index + 1 %></span>
+              <span class="text-base sm:text-lg text-gray-700"><%= step.description %></span>
+            </li>
+          <% end %>
+        </ol>
+      </div>
+    <% end %>
+  </div>
+  <div class="flex flex-wrap gap-4 justify-end">
+    <% if current_user == @rice_ball.user %>
+      <div class="flex gap-2 self-end">
+        <%= link_to t(".edit"), edit_rice_ball_path(@rice_ball), class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm md:text-base font-medium transition-colors" %>
+        <%= link_to t(".destroy"), rice_ball_path(@rice_ball),
+              data: {
+                turbo_method: "delete",
+                turbo_confirm: t(".destroy_confirm") },
+              class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm md:text-base font-medium transition-colors" %>
+      </div>
+    <% end %>
+  </div>
 </div>
