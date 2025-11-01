@@ -1,0 +1,20 @@
+<div class="w-full flex justify-center mb-3 nested-fields" data-step-forms-target="stepFields">
+  <div class="w-full flex gap-3">
+    <!-- ステップ番号 -->
+    <span class="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold"></span>
+    <!-- 説明 textarea -->
+    <%= f.text_area :description, rows: 3,
+          class: "flex-grow min-w-0 px-3 py-2 text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-vertical",
+          placeholder: t("defaults.step_description_placeholder") %>
+    <!-- 削除ボタン -->
+    <%= button_tag type: "button", data: { action: "click->step-forms#removeForm" },
+          class: "flex-shrink-0 w-10 h-10 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors flex items-center justify-center" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    <% end %>
+  </div>
+  <!-- hidden fields -->
+  <%= f.hidden_field :_destroy %>
+  <%= f.hidden_field :step_number %>
+</div>

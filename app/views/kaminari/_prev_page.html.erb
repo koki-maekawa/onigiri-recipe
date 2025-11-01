@@ -1,0 +1,6 @@
+<li class="prev">
+  <%= link_to_unless current_page.first?, t("views.pagination.previous").html_safe, url,
+      rel: "prev",
+      remote: remote,
+      class: "flex items-center justify-center w-10 h-10 bg-white border border-gray-300 text-gray-500 hover:bg-green-50 hover:text-green-600 hover:border-green-300 transition-all duration-200 rounded-l-lg font-medium text-sm" %>
+</li>
