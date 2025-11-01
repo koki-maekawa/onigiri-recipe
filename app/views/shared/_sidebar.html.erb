@@ -1,0 +1,34 @@
+<aside class="sticky top-[88px] z-20 hidden lg:block w-64 bg-white border border-gray-200 rounded-lg shadow-sm p-4 my-4 self-start">
+  <ul class="space-y-2">
+    <li>
+      <%= link_to rice_balls_path, class: "flex items-center px-4 py-3 text-sm font-medium rounded-md transition-colors duration-200 #{current_page?(rice_balls_path) || current_page?(root_path) ? 'bg-green-100 text-green-800 border border-green-200' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'}" do %>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 flex-shrink-0"
+          fill="currentColor"
+          viewBox="0 0 24 24">
+          <path
+            fill-rule="evenodd"
+            d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
+            clip-rule="evenodd"></path>
+        </svg>
+        <span class="ml-3"><%= t("defaults.search_rice_ball") %></span>
+      <% end %>
+    </li>
+    <li>
+      <%= link_to new_rice_ball_path, class: "flex items-center px-4 py-3 text-sm font-medium rounded-md transition-colors duration-200 #{current_page?(new_rice_ball_path) ? 'bg-green-100 text-green-800 border border-green-200' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'}" do %>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="h-5 w-5 flex-shrink-0">
+          <path
+            fill-rule="evenodd"
+            d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
+            clip-rule="evenodd"></path>
+        </svg>
+        <span class="ml-3"><%= t("defaults.create_rice_ball") %></span>
+      <% end %>
+    </li>
+  </ul>
+</aside>
