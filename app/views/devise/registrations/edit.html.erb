@@ -1,4 +1,6 @@
-<div class="bg-white shadow-sm rounded-lg w-full max-w-2xl mx-auto p-6 sm:p-7 md:p-8 my-4 border border-gray-200">
+<div class="flex justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="w-full min-w-96 max-w-xl space-y-8">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
   <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-center mb-6">
     <%= t(".title", resource: devise_i18n_fix_model_name_case(resource.model_name.human, i18n_key: "registrations.edit.title")) %>
   </h2>
@@ -50,7 +52,9 @@
           class: "py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors duration-200" %>
     </div>
   </div>
-  <div class="mt-6 text-center">
-    <%= link_to t("devise.shared.links.back"), :back, class: "text-blue-600 hover:text-blue-800 underline" %>
+      <div class="mt-6 text-center">
+        <%= link_to t("devise.shared.links.back"), :back, class: "text-blue-600 hover:text-blue-800 underline" %>
+      </div>
+    </div>
   </div>
 </div>
