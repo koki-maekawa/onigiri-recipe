@@ -6,7 +6,9 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
-  resources :rice_balls
+  resources :rice_balls do
+    resource :bookmarks, only: [ :create, :destroy ]
+  end
 
   get "up" => "rails/health#show", as: :rails_health_check
 
