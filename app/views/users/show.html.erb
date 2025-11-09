@@ -4,7 +4,6 @@
       <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6">
         <%= @user.name %>
       </h1>
-      
       <div class="grid grid-cols-2 gap-6 max-w-md mx-auto">
         <div class="text-center">
           <div class="text-2xl sm:text-3xl font-bold text-green-600 mb-2">
@@ -27,14 +26,12 @@
       </div>
     </div>
   </div>
-
   <div class="w-full">
     <div class="mb-4">
       <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 border-b-2 border-green-500 pb-2">
         <%= t("defaults.created_recipe") %>
       </h2>
     </div>
-    
     <% if @created_rice_balls_count >= 1 %>
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-6">
         <% @created_rice_balls.each do |rice_ball| %>
@@ -43,7 +40,7 @@
       </div>
       <% if @created_rice_balls_count >= 5 %>
         <div class="text-center">
-          <%= link_to t(".created_index"), created_index_user_path(@user), 
+          <%= link_to t(".created_index"), created_index_user_path(@user),
                 class: "inline-flex items-center px-6 py-3 bg-green-500 text-white font-medium rounded-lg shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-200" %>
         </div>
       <% end %>
@@ -55,7 +52,6 @@
       </div>
     <% end %>
   </div>
-
   <% if current_user == @user %>
     <div class="w-full">
       <div class="mb-4">
@@ -63,7 +59,6 @@
           <%= t("defaults.bookmark") %>
         </h2>
       </div>
-      
       <% if @bookmarked_rice_balls_count >= 1 %>
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-6">
           <% @bookmarked_rice_balls.each do |rice_ball| %>
@@ -72,7 +67,7 @@
         </div>
         <% if @bookmarked_rice_balls_count >= 5 %>
           <div class="text-center">
-            <%= link_to t(".bookmarked_index"), bookmarked_index_user_path(@user), 
+            <%= link_to t(".bookmarked_index"), bookmarked_index_user_path(@user),
                   class: "inline-flex items-center px-6 py-3 bg-blue-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200" %>
           </div>
         <% end %>
