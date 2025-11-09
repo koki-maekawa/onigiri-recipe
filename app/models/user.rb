@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :rice_balls, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
+  has_many :bookmarked_rice_balls, through: :bookmarks, source: :rice_ball
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
