@@ -47,6 +47,9 @@
     <% end %>
   </div>
   <div class="flex flex-wrap gap-4 justify-end">
+    <div class="flex gap-2">
+      <%= render "shared/bookmark", rice_ball: @rice_ball, size: "show" %>
+    </div>
     <% if current_user == @rice_ball.user %>
       <div class="flex gap-2 self-end">
         <%= link_to t(".edit"), edit_rice_ball_path(@rice_ball), class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm md:text-base font-medium transition-colors" %>
