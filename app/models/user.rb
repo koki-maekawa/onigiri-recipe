@@ -8,6 +8,10 @@ class User < ApplicationRecord
 
   validates :name, presence: true
 
+  def already_bookmarked?(rice_ball)
+    bookmarks.pluck(:rice_ball_id).include?(rice_ball.id)
+  end
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.provider = auth.provider
