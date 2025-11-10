@@ -1,0 +1,45 @@
+<div class="flex flex-col w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 gap-6">
+  <div class="text-center">
+    <div class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+      </svg>
+      <span class="text-lg sm:text-xl md:text-2xl font-bold text-blue-800">
+        <%= @tag.name %>
+      </span>
+    </div>
+    <p class="text-gray-600 mt-2 text-sm sm:text-base">
+      このタグが付いたレシピ (<%= @rice_balls.total_count %>件)
+    </p>
+  </div>
+
+  <%= turbo_frame_tag "rice-balls-list", class: "w-full space-y-6" do %>
+    <% if @rice_balls.any? %>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <% @rice_balls.each do |rice_ball| %>
+          <%= render "rice_balls/rice_ball", rice_ball: rice_ball, user: rice_ball.user %>
+        <% end %>
+      </div>
+      
+      <div class="flex justify-center mt-8">
+        <%= paginate @rice_balls %>
+      </div>
+    <% else %>
+      <div class="flex flex-col items-center justify-center py-16 px-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <h3 class="text-lg font-medium text-gray-600 mb-2">
+          レシピが見つかりませんでした
+        </h3>
+        <p class="text-gray-500 text-center max-w-md">
+          「<span class="font-medium text-blue-600"><%= @tag.name %></span>」のタグが付いたレシピはまだありません。
+        </p>
+        <div class="mt-6">
+          <%= link_to "レシピを作成する", new_rice_ball_path, 
+                class: "inline-flex items-center px-4 py-2 bg-green-500 text-white font-medium rounded-lg shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-200" %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
