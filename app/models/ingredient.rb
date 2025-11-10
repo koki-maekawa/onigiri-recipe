@@ -1,7 +1,7 @@
 class Ingredient < ApplicationRecord
   belongs_to :rice_ball
 
-    validates :name, :amount, presence: true
+  validates :name, :amount, presence: true
 
   def self.ransackable_attributes(auth_object = nil)
     [ "name" ]
