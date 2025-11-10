@@ -3,6 +3,8 @@ class RiceBall < ApplicationRecord
   has_many :ingredients, dependent: :destroy
   has_many :steps, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
+  has_many :rice_ball_tags, dependent: :destroy
+  has_many :tags, through: :rice_ball_tags
   has_one_attached :image do |attachable|
     attachable.variant :index, resize_and_pad: [ 500, 500 ], preprocessed: true
     attachable.variant :show, resize_and_pad: [ 1000, 1000 ], preprocessed: true
@@ -17,7 +19,7 @@ class RiceBall < ApplicationRecord
   end
 
   def self.ransackable_associations(auth_object = nil)
-    [ "ingredients", "user" ]
+    [ "ingredients", "user", "tags" ]
   end
 
   private

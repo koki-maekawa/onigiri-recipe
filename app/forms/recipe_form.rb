@@ -2,6 +2,7 @@ class RecipeForm < FormBase
     attr_accessor :rice_ball
     attr_accessor :ingredients
     attr_accessor :steps
+    attr_accessor :tag_names
 
     delegate :id, :persisted?, to: :rice_ball
 
@@ -10,6 +11,7 @@ class RecipeForm < FormBase
       @rice_ball = recipe || RiceBall.new(user: @user)
       @ingredients = recipe&.ingredients
       @steps = recipe&.steps
+      @tag_names = recipe&.tags&.map(&:name)&.join(",")
       super(attributes: attributes)
     end
 
@@ -73,8 +75,13 @@ class RecipeForm < FormBase
       {
         rice_ball: rice_ball,
         ingredients: ingredients,
-        steps: steps
+        steps: steps,
+        tag_names: tag_names
       }
+    end
+
+    def split_tag_names
+      tag_names.split(",").uniq.map(&:strip).reject(&:blank?)
     end
 
     def persist
@@ -84,6 +91,8 @@ class RecipeForm < FormBase
         rice_ball.save!
         ingredients.each(&:save!)
         steps&.each(&:save!)
+        tags = split_tag_names.map { |name| Tag.find_or_create_by!(name: name.strip) }
+        rice_ball.tags = tags
       end
 
       true
