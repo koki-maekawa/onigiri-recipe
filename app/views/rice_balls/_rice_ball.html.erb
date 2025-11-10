@@ -1,8 +1,6 @@
 <div class="bg-white shadow-sm hover:shadow-md transition-shadow border border-gray-200 hover:border-green-500 rounded-lg overflow-hidden relative group">
-  <div class="absolute inset-0 z-0">
-    <%= link_to "", rice_ball_path(rice_ball), data: { turbo_frame: "_top" }, class: "block w-full h-full" %>
-  </div>
-  <figure class="relative overflow-hidden">
+  <%= link_to "", rice_ball_path(rice_ball), data: { turbo_frame: "_top" }, class: "absolute inset-0 z-10" %>
+  <figure class="relative overflow-hidden z-0">
     <% if rice_ball.image.attached? %>
       <%= image_tag rice_ball.image.variant(:index), class: "w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" %>
     <% else %>
@@ -16,7 +14,18 @@
       </span>
     </h2>
   </div>
-  <div class="flex justify-end gap-2 p-2 relative z-10">
+  <% if rice_ball.tags.any? %>
+    <div class="relative z-20  px-3 pb-2">
+      <div class="flex flex-wrap gap-1">
+        <% rice_ball.tags.each do |tag| %>
+          <%= link_to tag.name, tag_path(tag), 
+                class: "inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition-colors duration-200",
+                data: { turbo: false } %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <div class="flex justify-end gap-2 p-2 relative z-20">
     <%= render "shared/bookmark", rice_ball:, size: "index" %>
   </div>
 </div>
