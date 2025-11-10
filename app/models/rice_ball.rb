@@ -19,7 +19,7 @@ class RiceBall < ApplicationRecord
   end
 
   def self.ransackable_associations(auth_object = nil)
-    [ "ingredients", "user" ]
+    [ "ingredients", "user", "tags" ]
   end
 
   private
